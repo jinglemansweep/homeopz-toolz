@@ -4,4 +4,4 @@
 
 HomeOpz Toolkit (Toolz) as a Docker container
 
-    docker run -it --rm -v ${PWD}/temp:/data:ro ghcr.io/jinglemansweep/homeopz-toolz:main bash
+    docker run -it --rm -v $(readlink -f ${SSH_AUTH_SOCK}):/run/ssh-agent -e SSH_AUTH_SOCK=/run/ssh-agent -v ${PWD}/work:/data:ro ghcr.io/jinglemansweep/homeopz-toolz:main bash
