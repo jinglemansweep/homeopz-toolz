@@ -1,0 +1,7 @@
+- name: Provision host
+  hosts: all
+  become: true
+  roles:
+    - role: provision
+      tags:
+        - provision

@@ -1,0 +1,5 @@
+provision_authorized_keys: []
+provision_user: automation
+provision_group: automation
+provision_description: Automation User
+provision_home_dir: /automation

@@ -28,6 +28,9 @@ RUN apt-get install -yy \
       screen software-properties-common tmux vim wget
 
 # Install Ansible
+ENV ANSIBLE_CONFIG=/opt/toolz/ansible/ansible.cfg
+ENV ANSIBLE_VAULT_PASSWORD=
+
 RUN add-apt-repository -yy --update ppa:ansible/ansible && \
     apt-get remove -yy ansible && \
     apt-get install -yy ansible-core
@@ -53,10 +56,13 @@ RUN groupadd -g ${gid} ${user} && \
 COPY ./rootfs/ /
 
 # Set filesystem permissions
-RUN chmod +x /opt/toolz/scripts/*.sh
+RUN chmod +x /opt/toolz/ansible/bin/*.sh /opt/toolz/scripts/*.sh
+
+# Configure Ansible
+RUN ansible-galaxy collection install -r /opt/toolz/ansible/requirements.yml
 
 # Switch to non-privileged user
 USER ${user}
-WORKDIR /home/${user}
+WORKDIR /work
 
 CMD /opt/toolz/scripts/entrypoint.sh

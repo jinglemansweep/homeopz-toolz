@@ -1,0 +1,30 @@
+- name: Ensure provision user group exists
+  group:
+    name: '{{ provision_group }}'
+    state: present
+
+- name: Add provision user
+  user:
+    name: '{{ provision_user }}'
+    shell: '/bin/bash'
+    comment: '{{ provision_description }}'
+    home: '/{{ provision_user }}'
+    groups:
+      - adm
+      - sudo
+      - '{{ provision_group }}'
+    append: yes
+
+- name: Allow provision user to run sudo without password
+  lineinfile:
+    dest: '/etc/sudoers'
+    state: present
+    regexp: '^%{{ provision_group }}'
+    line: '%{{ provision_group }} ALL=(ALL) NOPASSWD: ALL'
+    validate: visudo -cf %s
+
+- name: Add authorized keys for provision user
+  authorized_key:
+    user: '{{ provision_user }}'
+    key: '{{ item }}'
+  with_items: '{{ provision_authorized_keys }}'
