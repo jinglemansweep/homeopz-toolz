@@ -23,6 +23,14 @@
     line: '%{{ provision_group }} ALL=(ALL) NOPASSWD: ALL'
     validate: visudo -cf %s
 
+- name: Copy SSH private key for provision user
+  copy:
+    src: ../secrets/keys/ssh/
+    dest: /{{ provision_user }}/.ssh/
+    owner: '{{ provision_user }}'
+    group: '{{ provision_group }}'
+    mode: '0600'
+
 - name: Add authorized keys for provision user
   authorized_key:
     user: '{{ provision_user }}'
