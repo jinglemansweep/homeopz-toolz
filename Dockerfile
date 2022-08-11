@@ -59,7 +59,8 @@ COPY ./rootfs/ /
 RUN chmod +x /opt/toolz/ansible/bin/*.sh /opt/toolz/scripts/*.sh
 
 # Configure Ansible
-RUN ansible-galaxy collection install -r /opt/toolz/ansible/requirements.yml
+RUN ansible-galaxy collection install -r /opt/toolz/ansible/requirements.yml && \
+    ansible-galaxy install -r /opt/toolz/ansible/requirements.yml
 
 # Switch to non-privileged user
 USER ${user}
